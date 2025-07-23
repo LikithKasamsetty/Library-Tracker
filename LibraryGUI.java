@@ -71,7 +71,7 @@ public class LibraryGUI extends JFrame {
         searchPanel.add(searchButton);
         searchPanel.add(resetButton);
         
-        // Add book panel (unchanged)
+        // Add book panel
         JPanel addBookPanel = new JPanel(new GridLayout(3, 2, 5, 5));
         JTextField titleField = new JTextField();
         JTextField authorField = new JTextField();
@@ -81,7 +81,7 @@ public class LibraryGUI extends JFrame {
         addButton.addActionListener(e -> {
             if (!titleField.getText().isEmpty() && !authorField.getText().isEmpty() && !isbnField.getText().isEmpty()) {
                 library.addBook(titleField.getText(), authorField.getText(), isbnField.getText());
-                updateBookList();
+                updateBookList(); // Update the book list model
                 titleField.setText("");
                 authorField.setText("");
                 isbnField.setText("");
@@ -117,7 +117,7 @@ public class LibraryGUI extends JFrame {
         JList<String> borrowerList = new JList<>(borrowerListModel);
         JScrollPane scrollPane = new JScrollPane(borrowerList);
         
-        // Add borrower panel (unchanged)
+        // Add borrower panel
         JPanel addBorrowerPanel = new JPanel(new GridLayout(2, 2, 5, 5));
         JTextField nameField = new JTextField();
         JTextField idField = new JTextField();
@@ -137,14 +137,13 @@ public class LibraryGUI extends JFrame {
         addBorrowerPanel.add(new JLabel("ID:"));
         addBorrowerPanel.add(idField);
         
-        // Improved Show books button
+        // Show books button
         JButton showBooksButton = new JButton("Show Borrowed Books");
         showBooksButton.addActionListener(e -> {
             int index = borrowerList.getSelectedIndex();
             if (index != -1) {
                 Borrower borrower = library.getAllBorrowers().get(index);
                 
-                // Create a formatted display
                 JTextArea textArea = new JTextArea(10, 30);
                 textArea.setEditable(false);
                 textArea.append("Borrower: " + borrower.getName() + " (ID: " + borrower.getId() + ")\n\n");
@@ -183,7 +182,7 @@ public class LibraryGUI extends JFrame {
     private JPanel createTransactionsPanel() {
         JPanel panel = new JPanel(new BorderLayout());
         
-        // Form panel (unchanged)
+        // Form panel
         JPanel formPanel = new JPanel(new GridLayout(3, 2, 5, 5));
         
         JLabel borrowerLabel = new JLabel("Borrower ID:");
@@ -197,7 +196,7 @@ public class LibraryGUI extends JFrame {
         JLabel statusLabel = new JLabel(" ", JLabel.CENTER);
         statusLabel.setForeground(Color.BLUE);
         
-        // Action listeners (unchanged)
+        // Action listeners
         borrowButton.addActionListener(e -> {
             String borrowerId = borrowerField.getText();
             String bookIsbn = bookField.getText();
@@ -205,8 +204,8 @@ public class LibraryGUI extends JFrame {
             if (library.borrowBook(borrowerId, bookIsbn)) {
                 statusLabel.setText("Book borrowed successfully!");
                 statusLabel.setForeground(Color.GREEN);
-                updateBookList();
-                updateBorrowerList();
+                updateBookList(); // Update the book list to show new status
+                updateBorrowerList(); // Update borrower list to show new count
             } else {
                 statusLabel.setText("Failed to borrow book. Check IDs and availability.");
                 statusLabel.setForeground(Color.RED);
